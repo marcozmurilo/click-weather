@@ -20,6 +20,7 @@
 		<script src="assets/js/route.js" type="module" defer></script>
 	</head>
 	<body>
+		<!-- Header -->
 		<header class="header">
 			<div class="container">
 				<a href="#" class="logo">
@@ -30,36 +31,38 @@
 						<input
 							type="search"
 							name="search"
-							placeholder="Digite a localização..."
+							placeholder="Procurar cidade..."
 							autocomplete="off"
 							class="search-field"
 							data-search-field
 						/>
+
 						<span class="m-icon">search</span>
 
-						<button class="icon-btn leading-icon has-state" aria-label="Fechar pesquisa" data-search-toggler>
-						<span class="m-icon">arrow_back</span>
+						<button
+							class="icon-btn leading-icon has-state"
+							aria-label="Fechar pesquisa"
+							data-search-toggler
+						>
+							<span class="m-icon">arrow_back</span>
+						</button>
 					</div>
 
-					</button>
+					<div class="search-result" data-search-result>
+						<ul class="view-list" data-search-list>
+							<li class="view-item">
+								<span class="m-icon">location_on</span>
 
-				</div>
-				<div class="search-result" data-search-result>
-					<ul class="view-list" data-search-list>
+								<div>
+									<p class="item-title">Brasília</p>
 
-						<li class="view-item">
-							<span class="m-icon">location_on</span>
+									<p class="label-2 item-subtitle">Distrito Federal, BR</p>
+								</div>
 
-							<div>
-								<p class="item-title">Brasília</p>
-
-								<p class="label-2 item-subtitle">Brasília, BR</p>
-							</div>
-
-							<a href="#" class="item-link has-state" data-search-toggler></a>
-						</li>
-
-					</ul>
+								<a href="#" class="item-link has-state" data-search-toggler></a>
+							</li>
+						</ul>
+					</div>
 				</div>
 
 				<div class="header-actions">
@@ -74,5 +77,13 @@
 				</div>
 			</div>
 		</header>
+
+		<main>
+			<article class="container">
+				<div class="content left">
+					<!-- Tempo Atual -->
+				</div>
+			</article>
+		</main>
 	</body>
 </html>

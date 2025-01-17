@@ -18,7 +18,7 @@ export const getTime = function (timeUnix, timezone) {
 	const minutes = date.getUTCMinutes();
 	// const period = hours >= 12 ? 'PM' : 'AM';
 
-	// return `${hours % 12 || 12}:${minutes} ${period}`
+	// return `${hours % 12 || 12}:${minutes} ${period}`;
 	// Formata as horas e minutos no formato de 24 horas (com 2 dígitos para os minutos)
 	return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`;
 };
@@ -28,6 +28,7 @@ export const getHours = function (timeUnix, timezone) {
 	const hours = date.getUTCHours();
 	// const period = hours >= 12 ? 'PM' : 'AM';
 
+	return `${hours % 12 || 12} ${period}`;
 	// Exibe as horas no formato de 24 horas (com 2 dígitos)
 	return `${hours < 10 ? '0' + hours : hours}`;
 };

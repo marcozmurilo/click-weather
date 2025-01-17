@@ -17,17 +17,17 @@
 		<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet" />
 		<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 		<!-- CSS -->
-		<link rel="stylesheet" href="assets/css/style.css" />
+		<link rel="stylesheet" href="./assets/css/style.css" />
 		<!-- Scripts -->
-		<script src="assets/scripts/app.js" type="module" defer></script>
-		<script src="assets/scripts/module.js" type="module" defer></script>
+		<script src="./assets/scripts/app.js" type="module" defer></script>
+		<script src="./assets/scripts/route.js" type="module" defer></script>
 	</head>
 	<body>
 		<!-- Header -->
 		<header class="header">
 			<div class="container">
 				<a href="#" class="logo">
-					<img src="assets/images/logo.png" width="364" height="58" alt="Click Weather Logo" />
+					<img src="./assets/images/logo.png" width="364" height="58" alt="Click Weather Logo" />
 				</a>
 				<div class="search-view" data-search-view>
 					<div class="search-wrapper">
@@ -56,7 +56,7 @@
 
 				<div class="header-actions">
 					<button class="icon-btn has-state" aria-label="Abrir Pesquisa" data-search-toggler>
-						<span class="m-icon">search</span>
+						<span class="m-icon icon">search</span>
 					</button>
 
 					<a href="#/current-location" class="btn-primary has-state" data-current-location-btn>
@@ -69,44 +69,13 @@
 
 		<!-- Main -->
 		<main>
-			<article class="container">
+			<article class="container" data-container>
 				<div class="content-left">
-					<!-- Agora -->
-					<section class="section current-weather" aria-label="Agora">
-						<div class="card card-lg current-weather-card">
-							<h2 class="title-2 card-title">Agora</h2>
-
-							<div class="weapper">
-								<p class="heading">25&deg;<sup>C</sup></p>
-
-								<img
-									src="assets/images/icons/01n.png"
-									width="64"
-									height="64"
-									alt="Nublado"
-									class="weather-icon"
-								/>
-							</div>
-
-							<p class="body-3">Nublado</p>
-
-							<ul class="meta-list">
-								<li class="meta-item">
-									<span class="m-icon">calendar_today</span>
-
-									<p class="title-3 meta-text">Quinta 16, Fev</p>
-								</li>
-								<li class="meta-item">
-									<span class="m-icon">location_on</span>
-
-									<p class="title-3 meta-text">Distrito Federal, BR</p>
-								</li>
-							</ul>
-						</div>
-					</section>
+					<!-- Clima Agora -->
+					<section class="section current-weather" aria-label="Clima agora" data-current-weather></section>
 
 					<!-- Previsão para 5 dias -->
-					<section class="section forecast" aria-labelledby="forecast-label" data-5-days-forecast>
+					<section class="section forecast" aria-labelledby="forecast-label" data-5-day-forecast>
 						<h2 class="title-2" id="forecast-label">Previsão para 5 dias</h2>
 
 						<div class="card card-lg forecast-card">
@@ -320,7 +289,7 @@
 					</section>
 
 					<!-- Previsão do Dia -->
-					<section class="section hourly-forecast" aria-label="hourly forecast" data-hourly-forecast>
+					<section class="section hourly-forecast" Previsão do Dia="hourly forecast" data-hourly-forecast>
 						<h2 class="title-2">Previsão do Dia</h2>
 
 						<div class="slider-container">

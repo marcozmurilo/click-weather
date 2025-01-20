@@ -29,12 +29,7 @@
 
 	/* GRADIENTES */
 	--gradient-1: linear-gradient(180deg, hsla(270, 5%, 7%, 0) 0%, hsla(270, 5%, 7%, 0.8) 65%, hsl(270, 5%, 7%) 100%);
-	--gradient-2: linear-gradient(
-		180deg,
-		hsla(260, 5%, 12%, 0) 0%,
-		hsla(260, 5%, 12%, 0.8) 65%,
-		hsl(260, 5%, 12%) 100%
-	);
+	--gradient-2: linear-gradient(180deg, hsla(260, 5%, 12%, 0) 0%, hsla(260, 5%, 12%, 0.8) 65%, hsl(260, 5%, 12%) 100%);
 
 	/* TIPOGRAFIA */
 	--ff-nunito-sans: 'Nunito Sans', sans-serif;

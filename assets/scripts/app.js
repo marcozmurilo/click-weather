@@ -81,9 +81,9 @@ const errorContent = document.querySelector('[data-error-content]');
 // Processar os dados de clima no HTML
 export const updateWeather = function (lat, lon) {
 	console.log(`Atualizando o clima para: Latitude: ${lat}, Longitude: ${lon}`);
-	// loading.style.display = 'grid';
+	loading.style.display = 'grid';
 	container.style.overflowY = 'hidden';
-	// container.classList.remove('fade-in');
+	container.classList.remove('fade-in');
 	errorContent.style.display = 'none';
 
 	const currentWeatherSection = document.querySelector('[data-current-weather]');
@@ -114,33 +114,31 @@ export const updateWeather = function (lat, lon) {
 		} = currentWeather;
 
 		const [{ description, icon }] = weather;
-		console.log(description);
-		console.log(icon);
-		console.log('Description and ico');
 
 		const card = document.createElement('div');
 		card.classList.add('card', 'card-lg', 'current-weather-card');
 
 		card.innerHTML = `
-            <h2 class="title-2 card-title">Agora</h2>
+      <h2 class="title-2 card-title">Agora</h2>
 
-            <div class="weapper">
-                <p class="heading">${parseInt(temp)}&deg;<sup>C</sup></p>
+      <div class="weapper">
+          <p class="heading">${parseInt(temp)}&deg;<sup>C</sup></p>
 
-                <img src="./assets/images/icons/${icon}.png" width="64" height="64" alt="${description}" class="weather-icon"/>
-            </div>
+          <img src="./assets/images/icons/${icon}.png" width="64" height="64" alt="${description}" class="weather-icon"/>
+      </div>
 
-            <p class="body-3">${description}</p>
-            <ul class="meta-list">
-                <li class="meta-item">
-                    <span class="m-icon">calendar_today</span>
-                    <p class="title-3 meta-text">${module.getDate(dateUnix, timezone)}</p>
-                </li>
-                <li class="meta-item">
-                    <span class="m-icon">location_on</span>
-                    <p class="title-3 meta-text" data-location></p>
-                </li>
-            </ul>`;
+      <p class="body-3">${description}</p>
+      <ul class="meta-list">
+        <li class="meta-item">
+          <span class="m-icon">calendar_today</span>
+          <p class="title-3 meta-text">${module.getDate(dateUnix, timezone)}</p>
+        </li>
+        <li class="meta-item">
+          <span class="m-icon">location_on</span>
+          <p class="title-3 meta-text" data-location></p>
+        </li>
+      </ul>
+    `;
 
 		fetchData(url.reverseGeo(lat, lon), function ([{ name, country }]) {
 			card.querySelector('[data-location]').innerHTML = `${name} - ${country}`;
@@ -155,7 +153,224 @@ export const updateWeather = function (lat, lon) {
 		// 		card.querySelector('[data-location]').innerHTML = `${name} - ${country}`;
 		// 	}
 		// });
+
+		// Destaques do dia
+		fetchData(url.airPollution(lat, lon), function (airPollution) {
+			const [
+				{
+					main: { aqi },
+					components: { no2, o3, so2, pm2_5 },
+				},
+			] = airPollution.list;
+
+			const card = document.createElement('div');
+			card.classList.add('card', 'card-lg');
+			card.innerHTML = `
+        <h2 class="title-2" id="highlights-label">Destaques de Hoje</h2>
+
+        <div class="highlight-list">
+          <div class="card card-sm highlight-card one">
+            <h3 class="title-3">Índice de Qualidade do Ar</h3>
+
+            <div class="wrapper">
+              <span class="m-icon">air</span>
+              <ul class="card-list">
+                <li class="card-item">
+                  <p class="title-1">${pm2_5.toPrecision(3)}</p>
+                  <p class="label-1">PM<sub>2.5</sub></p>
+                </li>
+                <li class="card-item">
+                  <p class="title-1">${so2.toPrecision(3)}</p>
+                  <p class="label-1">SO<sub>2</sub></p>
+                </li>
+                <li class="card-item">
+                  <p class="title-1">${no2.toPrecision(3)}</p>
+                  <p class="label-1">NO<sub>2</sub></p>
+                </li>
+                <li class="card-item">
+                  <p class="title-1">${o3.toPrecision(3)}</p>
+                  <p class="label-1">O<sub>3</sub></p>
+                </li>
+              </ul>
+            </div>
+
+            <span class="badge aqi-${aqi} label-${aqi}" title="${module.aqiText[aqi].message}">${
+				module.aqiText[aqi].level
+			}
+            </span>
+          </div>
+          <div class="card card-sm highlight-card two">
+            <h3 class="title-3">Nascer e Pôr do Sol</h3>
+
+            <div class="card-list">
+              <div class="card-item">
+                <span class="m-icon">brightness_high</span>
+                <div>
+                  <p class="label-1">Nascer do Sol</p>
+                  <p class="title-1">${module.getTime(sunriseUnixUTC, timezone)}</p>
+                </div>
+              </div>
+              <div class="card-item">
+                <span class="m-icon">bedtime</span>
+                <div>
+                  <p class="label-1">Pôr do Sol</p>
+                  <p class="title-1">${module.getTime(sunsetUnixUTC, timezone)}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-sm highlight-card">
+            <h3 class="title-3">Umidade</h3>
+            <div class="wrapper">
+              <span class="m-icon">opacity</span>
+              <p class="title-2">${humidity}<sub>%</sub></p>
+            </div>
+          </div>
+
+          <div class="card card-sm highlight-card">
+            <h3 class="title-3">Sensação</h3>
+            <div class="wrapper">
+              <span class="m-icon">thermostat</span>
+              <p class="title-2">${parseInt(feels_like)}&deg;<sup>C</sup></p>
+            </div>
+          </div>
+
+          <div class="card card-sm highlight-card">
+            <h3 class="title-3">Visibilidade</h3>
+            <div class="wrapper">
+              <span class="m-icon">visibility</span>
+              <p class="title-2">${(visibility / 1000).toFixed(1)}<sub>km</sub></p>
+            </div>
+          </div>
+
+          <div class="card card-sm highlight-card">
+            <h3 class="title-3">Pressão</h3>
+          <div class="wrapper">
+              <span class="m-icon">speed</span>
+              <p class="title-2">${pressure}<sub>hPA</sub></p>
+            </div>
+          </div>
+
+        </div>
+			`;
+
+			highlightSection.appendChild(card);
+		});
+
+		// Previsões do dia
+		fetchData(url.forecast(lat, lon), function (forecast) {
+			const {
+				list: forecastList,
+				city: { timezone },
+			} = forecast;
+
+			hourlySection.innerHTML = `
+        <h2 class="title-2">Previsão do Dia</h2>
+
+        <div class="slider-container">
+          <ul class="slider-list" data-temp></ul>
+          <ul class="slider-list" data-wind></ul>
+        </div>
+      `;
+
+			for (const [index, data] of forecastList.entries()) {
+				if (index > 7) break;
+				const {
+					dt: dateTimeUnix,
+					main: { temp },
+					weather,
+					wind: { deg: windDirection, speed: windSpeed },
+				} = data;
+				const [{ icon, description }] = weather;
+
+				const tempLi = document.createElement('li');
+				tempLi.classList.add('slider-item');
+
+				tempLi.innerHTML = `
+          <div class="card card-sm slider-card">
+            <p class="body-3">${module.getHours(dateTimeUnix, timezone)}h</p>
+
+            <img
+              src="./assets/images/icons/${icon}.png"
+              width="48"
+              height="48"
+              loading="lazy"
+              alt="${description}"
+              class="weather-icon"
+              title="${description}"
+            />
+
+            <p class="body-3">${parseInt(temp)}&deg;</p>
+          </div>
+        `;
+				hourlySection.querySelector('[data-temp]').appendChild(tempLi);
+
+				const windLi = document.createElement('li');
+				windLi.classList.add('slider-item');
+
+				windLi.innerHTML = `
+          <div class="card card-sm slider-card">
+            <p class="body-3">${module.getHours(dateTimeUnix, timezone)}h</p>
+
+            <img
+              src="./assets/images/icons/direction.png"
+              width="48"
+              height="48"
+              loading="lazy"
+              style="transform: rotate(${windDirection - 180}deg)"
+              class="weather-icon"
+              title=""
+            />
+
+            <p class="body-3">${parseInt(module.mps_to_kmh(windSpeed))} km/h</p>
+          </div>
+        `;
+
+				hourlySection.querySelector('[data-wind]').appendChild(windLi);
+			}
+
+			// Previsão para 5 dias
+			forecastSection.innerHTML = `
+        <h2 class="title-2" id="forecast-label">Previsão para 5 dias</h2>
+
+        <div class="card card-lg forecast-card">
+          <ul data-forecast-list></ul>
+        </div>
+      `;
+
+			for (let i = 7, len = forecastList.length; i < len; i += 8) {
+				const {
+					main: { temp_max },
+					weather,
+					dt_txt,
+				} = forecastList[i];
+				const [{ icon, description }] = weather;
+				const date = new Date(dt_txt);
+
+				const li = document.createElement('li');
+				li.classList.add('card-item');
+
+				li.innerHTML = `
+          <div class="icon-wrapper">
+            <img src="assets/images/icons/${icon}.png" width="36" height="36" alt="${description}" class="weather-icon" title="${description}"/>
+
+            <span class="span">
+              <p class="title-2">${parseInt(temp_max)}&deg</p>
+            </span>
+          </div>
+
+          <p class="label-1">${date.getDate()} ${module.monthNames[date.getUTCMonth()]}</p>
+          <p class="label-1">${module.weekDayNames[date.getUTCDay()]}</p>
+        `;
+				forecastSection.querySelector('[data-forecast-list]').appendChild(li);
+			}
+
+			loading.style.display = 'none';
+			container.style.overflowY = 'overlay';
+			container.classList.add('fade-in');
+		});
 	});
 };
 
-export const error404 = function () {};
+export const error404 = () => (errorContent.style.display = 'flex');
